@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.thumbnailPicBox = new System.Windows.Forms.PictureBox();
-            this.openButton = new System.Windows.Forms.Button();
+            this.importButton = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailPicBox)).BeginInit();
             this.SuspendLayout();
@@ -37,15 +37,15 @@
             this.thumbnailPicBox.TabIndex = 0;
             this.thumbnailPicBox.TabStop = false;
             // 
-            // openButton
+            // importButton
             // 
-            this.openButton.Location = new System.Drawing.Point(33, 35);
-            this.openButton.Name = "openButton";
-            this.openButton.Size = new System.Drawing.Size(132, 32);
-            this.openButton.TabIndex = 1;
-            this.openButton.Text = "Import Image";
-            this.openButton.UseVisualStyleBackColor = true;
-            this.openButton.Click += new System.EventHandler(this.openButton_Click);
+            this.importButton.Location = new System.Drawing.Point(33, 35);
+            this.importButton.Name = "importButton";
+            this.importButton.Size = new System.Drawing.Size(132, 32);
+            this.importButton.TabIndex = 1;
+            this.importButton.Text = "Import Image";
+            this.importButton.UseVisualStyleBackColor = true;
+            this.importButton.Click += new System.EventHandler(this.importButton_Click);
             // 
             // openFileDialog
             // 
@@ -60,7 +60,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1779, 825);
-            this.Controls.Add(this.openButton);
+            this.Controls.Add(this.importButton);
             this.Controls.Add(this.thumbnailPicBox);
             this.Name = "Form1";
             this.Text = "Puzzle";
@@ -72,7 +72,7 @@
         #endregion
 
         private System.Windows.Forms.PictureBox thumbnailPicBox;
-        private System.Windows.Forms.Button openButton;
+        private System.Windows.Forms.Button importButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }

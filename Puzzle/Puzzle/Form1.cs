@@ -14,40 +14,36 @@ namespace Puzzle {
             InitializeComponent();
         }
 
-        private void openButton_Click(object sender, EventArgs e) {
+        private void importButton_Click(object sender, EventArgs e) {
             string filename = "";
             if (openFileDialog.ShowDialog() == DialogResult.OK) {
                 filename = openFileDialog.FileName;
             }
             else
                 return;
-            // If the image is square, display it in edge1 * edge1;
-            // otherwise, display it in edge1 * edge2 or edge2 * edge1.
-            int edge1 = 300, edge2 = 200;
+            // If the image is square, display it in width * width;
+            // otherwise, display it in width * height.
+            int width = 300, height = 200;
+            Bitmap bm;
             try {
-                Bitmap bm = new Bitmap(filename);
-                int h = bm.Height, w = bm.Width;
-                if(h == w){
-                    thumbnailPicBox.Height = edge1;
-                    thumbnailPicBox.Width = edge1;
-                }
-                else if(h > w){
-                    thumbnailPicBox.Height = edge1;
-                    thumbnailPicBox.Width = edge2;
-                }
-                else{
-                    thumbnailPicBox.Height = edge2;
-                    thumbnailPicBox.Width = edge1;
-                }
+                bm = new Bitmap(filename);
+
+                if (bm.Width == bm.Height)
+                    height = width;
+                else if (bm.Width < bm.Height)
+                    (width, height) = (height, width);
+
+                thumbnailPicBox.Width = width;
+                thumbnailPicBox.Height = height;
                 thumbnailPicBox.Image = bm;
                 thumbnailPicBox.SizeMode = PictureBoxSizeMode.StretchImage;
             }
-            catch{
+            catch {
                 MessageBox.Show("Invalid file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
 
+            PuzzleProcess p = new PuzzleProcess(ref bm);
         }
     }
 }
