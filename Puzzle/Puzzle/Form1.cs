@@ -21,6 +21,7 @@ namespace Puzzle {
             }
             else
                 return;
+
             // If the image is square, display it in width * width;
             // otherwise, display it in width * height.
             int width = 300, height = 200;
@@ -33,10 +34,10 @@ namespace Puzzle {
                 else if (bm.Width < bm.Height)
                     (width, height) = (height, width);
 
-                thumbnailPicBox.Width = width;
-                thumbnailPicBox.Height = height;
-                thumbnailPicBox.Image = bm;
-                thumbnailPicBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                thumbnailpb.Width = width;
+                thumbnailpb.Height = height;
+                thumbnailpb.Image = bm;
+                thumbnailpb.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             catch {
                 MessageBox.Show("Invalid file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -44,6 +45,32 @@ namespace Puzzle {
             }
 
             PuzzleProcess p = new PuzzleProcess(ref bm);
+            float pieceSize = Convert.ToSingle(p.getPieceSize());
+            List<element> pieces = p.getElements();
+            // clear the controls and styles in table
+            tableLP.Controls.Clear();
+            tableLP.RowStyles.Clear();
+            tableLP.ColumnStyles.Clear();
+
+            // set table size, number of rows and columns
+            tableLP.Height = Convert.ToInt32(2.5 * height);
+            tableLP.Width = Convert.ToInt32(2.5 * width);
+            tableLP.RowCount = Convert.ToInt32(tableLP.Height / pieceSize);
+            tableLP.ColumnCount = Convert.ToInt32(tableLP.Width / pieceSize);
+
+            // set column style
+            for(int j = 0; j < tableLP.Width; j ++)
+                tableLP.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, pieceSize));
+
+            int i = 0;
+            for (int r = 0; r < tableLP.RowCount; r ++) {
+                tableLP.RowStyles.Add(new RowStyle(SizeType.Absolute, pieceSize));  // set row column style
+                for (int c = 0; c < tableLP.ColumnCount; c++) {
+                    PictureBox pb = new PictureBox();
+                    pb.Image = pieces[i ++].image; // load pieces into table
+                    tableLP.Controls.Add(pb, c, r);
+                }
+            }
         }
     }
 }
