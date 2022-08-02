@@ -27,7 +27,11 @@
             this.importButton = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tableLP = new System.Windows.Forms.TableLayoutPanel();
+            this.nextElementpb = new System.Windows.Forms.PictureBox();
+            this.destinationpb = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailpb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nextElementpb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.destinationpb)).BeginInit();
             this.SuspendLayout();
             // 
             // thumbnailpb
@@ -63,27 +67,49 @@
             this.tableLP.AutoSize = true;
             this.tableLP.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tableLP.ColumnCount = 1;
-            this.tableLP.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLP.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 750F));
             this.tableLP.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLP.Location = new System.Drawing.Point(492, 35);
+            this.tableLP.Location = new System.Drawing.Point(489, 35);
             this.tableLP.Margin = new System.Windows.Forms.Padding(0);
             this.tableLP.Name = "tableLP";
             this.tableLP.RowCount = 1;
-            this.tableLP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 750F));
             this.tableLP.Size = new System.Drawing.Size(750, 750);
             this.tableLP.TabIndex = 0;
+            // 
+            // nextElementpb
+            // 
+            this.nextElementpb.Location = new System.Drawing.Point(115, 553);
+            this.nextElementpb.Name = "nextElementpb";
+            this.nextElementpb.Size = new System.Drawing.Size(50, 50);
+            this.nextElementpb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.nextElementpb.TabIndex = 2;
+            this.nextElementpb.TabStop = false;
+            // 
+            // destinationpb
+            // 
+            this.destinationpb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.destinationpb.Location = new System.Drawing.Point(269, 553);
+            this.destinationpb.Name = "destinationpb";
+            this.destinationpb.Size = new System.Drawing.Size(50, 50);
+            this.destinationpb.TabIndex = 3;
+            this.destinationpb.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1518, 825);
+            this.Controls.Add(this.destinationpb);
+            this.Controls.Add(this.nextElementpb);
             this.Controls.Add(this.tableLP);
             this.Controls.Add(this.importButton);
             this.Controls.Add(this.thumbnailpb);
             this.Name = "Form1";
             this.Text = "Puzzle";
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailpb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nextElementpb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.destinationpb)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -95,6 +121,8 @@
         private System.Windows.Forms.Button importButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TableLayoutPanel tableLP;
+        private System.Windows.Forms.PictureBox nextElementpb;
+        private System.Windows.Forms.PictureBox destinationpb;
     }
 }
 

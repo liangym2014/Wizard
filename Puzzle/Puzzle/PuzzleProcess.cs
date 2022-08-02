@@ -20,7 +20,12 @@ namespace Puzzle {
         private int width = 750, height = 500;
         private List<element> elements;
         private int elementSize = 50;  // the edge of each piece
+        private Random rand = new Random();
 
+        /// <summary>
+        /// Construct a puzzle with the imported bitmap Image. Resize the image into width * height. Divide it into pieces.
+        /// </summary>
+        /// <param name="bm"></param>
         public PuzzleProcess(ref Bitmap bm) {
             if (bm.Width == bm.Height)
                 height = width;
@@ -34,13 +39,13 @@ namespace Puzzle {
             int i = 0;
             for (int r = 0, rlim = height / elementSize; r < rlim; r++) {
                 for (int c = 0, clim = width / elementSize; c < clim; c++) {
-                    elements.Add(new element(cutImage(ref tnb, c * elementSize, r * elementSize, elementSize), i++));
+                    elements.Add(new element(cutImage(ref tnb, c * elementSize, r * elementSize, elementSize), i ++));
                 }
             }
         }
 
         /// <summary>
-        /// Return the bitmap pieces divided from the overeall Image.
+        /// Return a bitmap piece at (x,y) and with edge size from the overeall Image.
         /// </summary>
         /// <param name="overall"></param>
         /// <param name="x"></param>
@@ -52,19 +57,26 @@ namespace Puzzle {
         }
 
         /// <summary>
-        /// Return pieces of the Puzzle.
-        /// </summary>
-        /// <returns></returns>
-        public List<element> getElements() {
-            return elements;
-        }
-
-        /// <summary>
         /// Return the size of piece.
         /// </summary>
         /// <returns></returns>
         public int getPieceSize() {
             return elementSize;
+        }
+
+        /// <summary>
+        /// Return a shuffled piece of puzzle.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<element> getNextPiece(){
+            int n = elements.Count;
+            while(n > 0){
+                var e = elements[n - 1];
+                n --;
+                int j = n > 0? (rand.Next() % n): 0;
+                (elements[j], e) = (e, elements[j]);
+                yield return e;
+            }
         }
     }
 }
