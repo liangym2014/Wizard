@@ -19,8 +19,7 @@ namespace Puzzle {
     internal class PuzzleProcess {
         private int width = 750, height = 500;
         private List<element> elements;
-        private int elementSize = 50;  // the edge of each piece
-        private Random rand = new Random();
+        private int elementSize = 250;  // the edge of each piece
 
         /// <summary>
         /// Construct a puzzle with the imported bitmap Image. Resize the image into width * height. Divide it into pieces.
@@ -37,8 +36,8 @@ namespace Puzzle {
             // divide the Image into small pieces
             elements = new List<element>();
             int i = 0;
-            for (int r = 0, rlim = height / elementSize; r < rlim; r++) {
-                for (int c = 0, clim = width / elementSize; c < clim; c++) {
+            for (int r = 0, rlim = height / elementSize; r < rlim; r ++) {
+                for (int c = 0, clim = width / elementSize; c < clim; c ++) {
                     elements.Add(new element(cutImage(ref tnb, c * elementSize, r * elementSize, elementSize), i ++));
                 }
             }
@@ -60,22 +59,25 @@ namespace Puzzle {
         /// Return the size of piece.
         /// </summary>
         /// <returns></returns>
-        public int getPieceSize() {
-            return elementSize;
+        public int ElementSize {
+            get {
+                return elementSize;
+            }
         }
 
         /// <summary>
-        /// Return a shuffled piece of puzzle.
+        /// Return shuffled puzzle pieces.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<element> getNextPiece(){
-            int n = elements.Count;
-            while(n > 0){
-                var e = elements[n - 1];
-                n --;
-                int j = n > 0? (rand.Next() % n): 0;
-                (elements[j], e) = (e, elements[j]);
-                yield return e;
+        public List<element> Elements {
+            get {
+                Random rand = new Random();
+                elements = elements.OrderBy(_ => rand.Next()).ToList();
+/*                Debug.WriteLine("getPieces: ");
+                foreach (var e in elements)
+                    Debug.Write(e.index.ToString() + "\t");
+                Debug.WriteLine("");*/
+                return elements;
             }
         }
     }

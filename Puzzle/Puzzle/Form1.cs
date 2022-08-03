@@ -11,11 +11,12 @@ using System.Diagnostics;
 namespace Puzzle {
     public partial class Form1 : Form {
         private PuzzleProcess p;
-        private int idx;
+        private int idx; // the index of piece in source PB
         private int count = 0; // the number of filled cells in table
         private int rows, cols;  // the number of rows and columns of table
         private Point src;  // source location of dragdrop operation
         private int pieceSize;
+        List<element> elements;
         public Form1() {
             InitializeComponent();
             nextElementpb.MouseDown += src_MouseDown;
@@ -52,7 +53,10 @@ namespace Puzzle {
             }
 
             p = new PuzzleProcess(ref bm);
-            pieceSize = p.getPieceSize();
+            pieceSize = p.ElementSize;
+            elements = p.Elements;
+            //clear counter
+            count = 0;
 
             // clear the controls and styles in table
             tableLP.Controls.Clear();
@@ -93,8 +97,10 @@ namespace Puzzle {
         /// Return a cell with specific configuration.
         /// </summary>
         /// <returns></returns>
-        private PictureBox configureCell(){
+        private PictureBox configureCell() {
             PictureBox pb = new PictureBox();
+            pb.Height = pieceSize;  // set height and width
+            pb.Width = pieceSize;
             pb.BorderStyle = BorderStyle.FixedSingle; // display cell border
             pb.Margin = Padding.Empty;  // no space between cells
             pb.Padding = Padding.Empty;
@@ -110,9 +116,14 @@ namespace Puzzle {
         /// fill nextElement PB with next piece of puzzle
         /// </summary>
         private void displayNextElement() {
-            foreach (element piece in p.getNextPiece()) {
-                nextElementpb.Image = piece.image;
-                nextElementpb.Tag = piece.index;
+            if (count < elements.Count) {
+                nextElementpb.Image = elements[count].image;
+                nextElementpb.Tag = elements[count].index;
+                //Debug.WriteLine("new element id:" + nextElementpb.Tag.ToString());
+            }
+            else{
+                nextElementpb.Image = null;
+                nextElementpb.Tag = -1;
             }
         }
 
@@ -132,9 +143,12 @@ namespace Puzzle {
                     src = new Point(source.Location.X, source.Location.Y);
                 else
                     src = new Point(-1, -1);  // source is nextElement PB
-                Debug.WriteLine("src:" + src.X.ToString() + ", " + src.Y.ToString());
-                source.DoDragDrop(img, DragDropEffects.Move);
+
                 idx = (int)source.Tag;
+                //Debug.WriteLine("src:" + src.X.ToString() + ", " + src.Y.ToString() + ",\tmouse down idx:" + idx.ToString());
+
+                // DoDragDrop invokes DragEnter and DragDrop, then return to MouseDown method
+                source.DoDragDrop(img, DragDropEffects.Move);
             }
         }
 
@@ -155,8 +169,8 @@ namespace Puzzle {
         /// <param name="e"></param>
         private void dest_DragDrop(object sender, DragEventArgs e) {
             PictureBox dest = sender as PictureBox;
-            int c = (int)(dest.Location.X / pieceSize), r = (int)(dest.Location.Y / pieceSize);
-            Debug.WriteLine("table location:" + c.ToString() + ", " + r.ToString());
+            //int c = (int)(dest.Location.X / pieceSize), r = (int)(dest.Location.Y / pieceSize);
+            //Debug.WriteLine("table location:" + c.ToString() + ", " + r.ToString());
 
             Bitmap src_img = e.Data.GetData(DataFormats.Bitmap) as Bitmap;
 
@@ -164,15 +178,16 @@ namespace Puzzle {
                 if (dest.Image == null) {
                     dest.Image = src_img;
                     dest.Tag = idx;
-                    Debug.WriteLine(++ count);
+                    ++ count;
+                    //Debug.WriteLine("cells filled:" + count.ToString() + ", dest.Tag:" + idx.ToString() + "\n");
                     displayNextElement();
                 }
             }
             else { // bitmap is from a cell, swap source and destination
-                Debug.WriteLine("swap: (" + ((int)(src.X/pieceSize)).ToString() + ", " + ((int)(src.Y / pieceSize)).ToString()
-                 + ") -> (" + c.ToString() + ", " + r.ToString() + ")");
+/*                Debug.WriteLine("swap: (" + ((int)(src.X / pieceSize)).ToString() + ", " + ((int)(src.Y / pieceSize)).ToString()
+                 + ") -> (" + c.ToString() + ", " + r.ToString() + ")");*/
                 PictureBox source = tableLP.GetChildAtPoint(new Point(src.X, src.Y)) as PictureBox;
-                swapPictureBox(src_img,  ref source, ref dest);
+                swapPictureBox(src_img, ref source, ref dest);
             }
 
             // check matching when all cells are filled
@@ -195,7 +210,7 @@ namespace Puzzle {
                     var pb = tableLP.GetControlFromPosition(c, r);
                     if ((int)pb.Tag != i)
                         return false;
-                    i++;
+                    i ++;
                 }
             }
             return true;
@@ -208,16 +223,8 @@ namespace Puzzle {
         /// <param name="dest"></param>
         /// <param name="src"></param>
         private void swapPictureBox(Bitmap src_bitmap, ref PictureBox src, ref PictureBox dest) {
-            if (dest.Image == null) {
-                src.Image = null;
-                src.Tag = -1;
-            }
-            else {
-                src.Image = dest.Image;
-                src.Tag = dest.Tag;
-            }
-            dest.Image = src_bitmap;
-            dest.Tag = idx;
+            (src.Image, dest.Image) = (dest.Image, src_bitmap);
+            (src.Tag, dest.Tag) = (dest.Tag, idx);
         }
     }
 }
