@@ -28,10 +28,8 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tableLP = new System.Windows.Forms.TableLayoutPanel();
             this.nextElementpb = new System.Windows.Forms.PictureBox();
-            this.destinationpb = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailpb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextElementpb)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.destinationpb)).BeginInit();
             this.SuspendLayout();
             // 
             // thumbnailpb
@@ -86,21 +84,11 @@
             this.nextElementpb.TabIndex = 2;
             this.nextElementpb.TabStop = false;
             // 
-            // destinationpb
-            // 
-            this.destinationpb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.destinationpb.Location = new System.Drawing.Point(269, 553);
-            this.destinationpb.Name = "destinationpb";
-            this.destinationpb.Size = new System.Drawing.Size(50, 50);
-            this.destinationpb.TabIndex = 3;
-            this.destinationpb.TabStop = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1518, 825);
-            this.Controls.Add(this.destinationpb);
             this.Controls.Add(this.nextElementpb);
             this.Controls.Add(this.tableLP);
             this.Controls.Add(this.importButton);
@@ -109,7 +97,6 @@
             this.Text = "Puzzle";
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailpb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextElementpb)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.destinationpb)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,7 +109,6 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TableLayoutPanel tableLP;
         private System.Windows.Forms.PictureBox nextElementpb;
-        private System.Windows.Forms.PictureBox destinationpb;
     }
 }
 
