@@ -19,6 +19,7 @@ namespace Puzzle {
         List<element> elements;
         public Form1() {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized; // maximize window
             nextElementpb.MouseDown += src_MouseDown;
         }
 
@@ -66,6 +67,9 @@ namespace Puzzle {
             // set table size, number of rows and columns
             tableLP.Height = Convert.ToInt32(2.5 * height);
             tableLP.Width = Convert.ToInt32(2.5 * width);
+
+            // set location
+            tableLP.Location = (tableLP.Height < tableLP.Width)? new Point(600, 94): new Point(600, 35);
 
             // set the number of rows and cols
             rows = tableLP.Height / pieceSize;
@@ -193,9 +197,9 @@ namespace Puzzle {
             // check matching when all cells are filled
             if (count == (rows * cols)) {
                 if (!checkMatch())
-                    Debug.WriteLine("Not Match!");
+                    MessageBox.Show("Try again", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else
-                    Debug.Write("Sucess");
+                    MessageBox.Show("Congratulation!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information); ;
             }
         }
 

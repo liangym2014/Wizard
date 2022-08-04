@@ -28,6 +28,7 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tableLP = new System.Windows.Forms.TableLayoutPanel();
             this.nextElementpb = new System.Windows.Forms.PictureBox();
+            this.nextPieceLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailpb)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextElementpb)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +68,7 @@
             this.tableLP.ColumnCount = 1;
             this.tableLP.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 750F));
             this.tableLP.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLP.Location = new System.Drawing.Point(489, 35);
+            this.tableLP.Location = new System.Drawing.Point(600, 35);
             this.tableLP.Margin = new System.Windows.Forms.Padding(0);
             this.tableLP.Name = "tableLP";
             this.tableLP.RowCount = 1;
@@ -77,18 +78,29 @@
             // 
             // nextElementpb
             // 
-            this.nextElementpb.Location = new System.Drawing.Point(115, 553);
+            this.nextElementpb.Location = new System.Drawing.Point(33, 553);
             this.nextElementpb.Name = "nextElementpb";
             this.nextElementpb.Size = new System.Drawing.Size(50, 50);
             this.nextElementpb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.nextElementpb.TabIndex = 2;
             this.nextElementpb.TabStop = false;
             // 
+            // nextPieceLabel
+            // 
+            this.nextPieceLabel.AutoSize = true;
+            this.nextPieceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nextPieceLabel.Location = new System.Drawing.Point(29, 514);
+            this.nextPieceLabel.Name = "nextPieceLabel";
+            this.nextPieceLabel.Size = new System.Drawing.Size(90, 20);
+            this.nextPieceLabel.TabIndex = 3;
+            this.nextPieceLabel.Text = "Next Piece";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1518, 825);
+            this.Controls.Add(this.nextPieceLabel);
             this.Controls.Add(this.nextElementpb);
             this.Controls.Add(this.tableLP);
             this.Controls.Add(this.importButton);
@@ -109,6 +121,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.TableLayoutPanel tableLP;
         private System.Windows.Forms.PictureBox nextElementpb;
+        private System.Windows.Forms.Label nextPieceLabel;
     }
 }
 
