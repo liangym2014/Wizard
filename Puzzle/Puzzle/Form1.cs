@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 namespace Puzzle {
+    /// <summary>
+    /// Define a struct containing a bitmap and an index to represent a piece of puzzle.
+    /// </summary>
     public struct element {
         public Bitmap image;
         public int index;
@@ -17,15 +20,15 @@ namespace Puzzle {
             index = idx;
         }
     };
-    public partial class Form1 : Form {
+    public partial class PuzzleForm : Form {
         private int idx; // the index of piece in source PB
         private int count = 0; // the number of filled cells in table
         private int rows, cols;  // the number of rows and columns of table
         private Point src;  // source location of dragdrop operation
-        private int pieceSize;
+        private int pieceSize = 0;
         List<element> elements;
 
-        public Form1() {
+        public PuzzleForm() {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized; // maximize window
             nextElementpb.MouseDown += src_MouseDown;
@@ -62,7 +65,7 @@ namespace Puzzle {
                 thumbnailpb.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             catch {
-                MessageBox.Show("Invalid file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Invalid file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -75,11 +78,17 @@ namespace Puzzle {
             count = 0;
 
             // set table height, width and piecesize
-            pieceSize = 180;
+            if(pieceSize == 0){
+                MessageBox.Show("Choose a Level", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             height *= 3;
             width *= 3;
             tableLP.Height = height;
             tableLP.Width = width;
+
+            // set background color
+            tableLP.BackColor = Color.White;
 
             // set location
             tableLP.Location = (tableLP.Height <= tableLP.Width) ? new Point(450, 110) : new Point(600, 35);
@@ -94,7 +103,7 @@ namespace Puzzle {
             for (int j = 0; j < cols; j++)
                 tableLP.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, pieceSize));
 
-            // add row style and cells
+            // set row style and add cells
             for (int r = 0; r < rows; r++) {
                 tableLP.RowStyles.Add(new RowStyle(SizeType.Absolute, pieceSize));  // set row column style
                 for (int c = 0; c < cols; c++) {
@@ -118,6 +127,33 @@ namespace Puzzle {
         }
 
         /// <summary>
+        /// Set piece size when easy radio button is checked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void easyOption_CheckedChanged(object sender, EventArgs e) {
+            pieceSize = 360;
+        }
+
+        /// <summary>
+        /// Set piece size when intermediate radio button is checked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void intermediateOption_CheckedChanged(object sender, EventArgs e) {
+            pieceSize = 180;
+        }
+
+        /// <summary>
+        /// Set piece size when hard radio button is checked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void hardOption_CheckedChanged(object sender, EventArgs e) {
+            pieceSize = 90;
+        }
+
+        /// <summary>
         /// Return a cell with specific configuration.
         /// </summary>
         /// <returns></returns>
@@ -125,7 +161,7 @@ namespace Puzzle {
             PictureBox pb = new PictureBox();
             pb.Height = pieceSize;  // set height and width
             pb.Width = pieceSize;
-            pb.BorderStyle = BorderStyle.FixedSingle; // display cell border
+            //pb.BorderStyle = BorderStyle.FixedSingle; // display cell border
             pb.Margin = Padding.Empty;  // no space between cells
             pb.Padding = Padding.Empty;
             pb.Tag = -1;
@@ -171,7 +207,6 @@ namespace Puzzle {
             if (count < elements.Count) {
                 nextElementpb.Image = elements[count].image;
                 nextElementpb.Tag = elements[count].index;
-                //Debug.WriteLine("new element id:" + nextElementpb.Tag.ToString());
             }
             else {
                 nextElementpb.Image = null;
@@ -197,8 +232,6 @@ namespace Puzzle {
                     src = new Point(-1, -1);  // source is nextElement PB
 
                 idx = (int)source.Tag;
-                //Debug.WriteLine("src:" + src.X.ToString() + ", " + src.Y.ToString() + ",\tmouse down idx:" + idx.ToString());
-
                 // DoDragDrop invokes DragEnter and DragDrop, then return to MouseDown method
                 source.DoDragDrop(img, DragDropEffects.Move);
             }
@@ -221,9 +254,6 @@ namespace Puzzle {
         /// <param name="e"></param>
         private void dest_DragDrop(object sender, DragEventArgs e) {
             PictureBox dest = sender as PictureBox;
-            //int c = (int)(dest.Location.X / pieceSize), r = (int)(dest.Location.Y / pieceSize);
-            //Debug.WriteLine("table location:" + c.ToString() + ", " + r.ToString());
-
             Bitmap src_img = e.Data.GetData(DataFormats.Bitmap) as Bitmap;
 
             if (src.X < 0) { // bitmap is from nextElement PB
@@ -231,13 +261,10 @@ namespace Puzzle {
                     dest.Image = src_img;
                     dest.Tag = idx;
                     ++ count;
-                    //Debug.WriteLine("cells filled:" + count.ToString() + ", dest.Tag:" + idx.ToString() + "\n");
                     displayNextElement();
                 }
             }
             else { // bitmap is from a cell, swap source and destination
-                /*                Debug.WriteLine("swap: (" + ((int)(src.X / pieceSize)).ToString() + ", " + ((int)(src.Y / pieceSize)).ToString()
-                                 + ") -> (" + c.ToString() + ", " + r.ToString() + ")");*/
                 PictureBox source = tableLP.GetChildAtPoint(new Point(src.X, src.Y)) as PictureBox;
                 swapPictureBox(src_img, ref source, ref dest);
             }
