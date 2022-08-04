@@ -9,20 +9,33 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 namespace Puzzle {
+    public struct element {
+        public Bitmap image;
+        public int index;
+        public element(Bitmap img, int idx) {
+            image = img;
+            index = idx;
+        }
+    };
     public partial class Form1 : Form {
-        private PuzzleProcess p;
         private int idx; // the index of piece in source PB
         private int count = 0; // the number of filled cells in table
         private int rows, cols;  // the number of rows and columns of table
         private Point src;  // source location of dragdrop operation
         private int pieceSize;
         List<element> elements;
+
         public Form1() {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized; // maximize window
             nextElementpb.MouseDown += src_MouseDown;
         }
 
+        /// <summary>
+        /// Import image, initialize table and next element PB.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void importButton_Click(object sender, EventArgs e) {
             string filename = "";
             if (openFileDialog.ShowDialog() == DialogResult.OK) {
@@ -33,7 +46,7 @@ namespace Puzzle {
 
             // If the image is square, display it in width * width;
             // otherwise, display it in width * height.
-            int width = 300, height = 200;
+            int width = 360, height = 240;
             Bitmap bm;
             try {
                 bm = new Bitmap(filename);
@@ -53,23 +66,23 @@ namespace Puzzle {
                 return;
             }
 
-            p = new PuzzleProcess(ref bm);
-            pieceSize = p.ElementSize;
-            elements = p.Elements;
-            //clear counter
-            count = 0;
-
             // clear the controls and styles in table
             tableLP.Controls.Clear();
             tableLP.RowStyles.Clear();
             tableLP.ColumnStyles.Clear();
 
-            // set table size, number of rows and columns
-            tableLP.Height = Convert.ToInt32(2.5 * height);
-            tableLP.Width = Convert.ToInt32(2.5 * width);
+            //clear counter
+            count = 0;
+
+            // set table height, width and piecesize
+            pieceSize = 180;
+            height *= 3;
+            width *= 3;
+            tableLP.Height = height;
+            tableLP.Width = width;
 
             // set location
-            tableLP.Location = (tableLP.Height < tableLP.Width)? new Point(600, 94): new Point(600, 35);
+            tableLP.Location = (tableLP.Height <= tableLP.Width) ? new Point(450, 110) : new Point(600, 35);
 
             // set the number of rows and cols
             rows = tableLP.Height / pieceSize;
@@ -92,6 +105,13 @@ namespace Puzzle {
             // initialize nextElementpb size
             nextElementpb.Height = pieceSize;
             nextElementpb.Width = pieceSize;
+
+            // get pieces of the puzzle
+            elements = new List<element>();
+            cutImage(ref bm, ref height, ref width, ref pieceSize);
+
+            // shuffle pieces
+            shuffleElements();
 
             // display the 1st piece
             displayNextElement();
@@ -117,6 +137,34 @@ namespace Puzzle {
         }
 
         /// <summary>
+        /// Construct a puzzle with the imported bitmap Image. Resize the image into width * height. Divide it into pieces.
+        /// </summary>
+        /// <param name="bm"></param>
+        public void cutImage(ref Bitmap bm, ref int height, ref int width, ref int edge) {
+            // turn the imported Image into the desired size
+            bm = new Bitmap(bm.GetThumbnailImage(width, height, new Image.GetThumbnailImageAbort(delegate { return false; }), new IntPtr(0)));
+
+            // divide the Image into small pieces
+            int i = 0;
+            for (int r = 0, rlim = height / edge; r < rlim; r++) {
+                for (int c = 0, clim = width / edge; c < clim; c++) {
+                    int x = c * edge, y = r * edge;
+                    Bitmap p = bm.Clone(new Rectangle(x, y, edge, edge), bm.PixelFormat);
+                    elements.Add(new element(p, i++));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Return shuffled puzzle pieces.
+        /// </summary>
+        /// <returns></returns>
+        public void shuffleElements() {
+            Random rand = new Random();
+            elements = elements.OrderBy(_ => rand.Next()).ToList();
+        }
+
+        /// <summary>
         /// fill nextElement PB with next piece of puzzle
         /// </summary>
         private void displayNextElement() {
@@ -125,7 +173,7 @@ namespace Puzzle {
                 nextElementpb.Tag = elements[count].index;
                 //Debug.WriteLine("new element id:" + nextElementpb.Tag.ToString());
             }
-            else{
+            else {
                 nextElementpb.Image = null;
                 nextElementpb.Tag = -1;
             }
@@ -188,8 +236,8 @@ namespace Puzzle {
                 }
             }
             else { // bitmap is from a cell, swap source and destination
-/*                Debug.WriteLine("swap: (" + ((int)(src.X / pieceSize)).ToString() + ", " + ((int)(src.Y / pieceSize)).ToString()
-                 + ") -> (" + c.ToString() + ", " + r.ToString() + ")");*/
+                /*                Debug.WriteLine("swap: (" + ((int)(src.X / pieceSize)).ToString() + ", " + ((int)(src.Y / pieceSize)).ToString()
+                                 + ") -> (" + c.ToString() + ", " + r.ToString() + ")");*/
                 PictureBox source = tableLP.GetChildAtPoint(new Point(src.X, src.Y)) as PictureBox;
                 swapPictureBox(src_img, ref source, ref dest);
             }
