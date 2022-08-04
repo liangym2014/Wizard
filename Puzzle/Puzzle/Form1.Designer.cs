@@ -60,15 +60,14 @@
             // 
             // openFileDialog
             // 
-            this.openFileDialog.Filter = "Image files (*.jpe;*.jpeg;*.jpg;*.bmp;*.png)|*.jpe;*.jpeg;*.jpg;*.bmp;*.png|All f" +
-    "iles (*.*)|*.*";
+            this.openFileDialog.Filter = "Image files (*.tiff;*.jpeg;*.jpg;*.bmp;*.png;*.gif)|*.jpe;*.jpeg;*.jpg;*.bmp;*.pn" +
+    "g|All files (*.*)|*.*";
             this.openFileDialog.FilterIndex = 0;
             this.openFileDialog.InitialDirectory = "\"c:\\\\\"";
             this.openFileDialog.RestoreDirectory = true;
             // 
             // tableLP
             // 
-            this.tableLP.AutoScroll = true;
             this.tableLP.BackColor = System.Drawing.SystemColors.Control;
             this.tableLP.ColumnCount = 1;
             this.tableLP.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 750F));
