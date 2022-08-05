@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+
 namespace Puzzle {
     /// <summary>
     /// Define a struct containing a bitmap and an index to represent a piece of puzzle.
@@ -20,6 +21,7 @@ namespace Puzzle {
             index = idx;
         }
     };
+
     public partial class PuzzleForm : Form {
         private int idx; // the index of piece in source PB
         private int count = 0; // the number of filled cells in table
@@ -31,7 +33,7 @@ namespace Puzzle {
         public PuzzleForm() {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized; // maximize window
-            nextElementpb.MouseDown += src_MouseDown;
+            nextElementpb.MouseDown += new MouseEventHandler(src_MouseDown);
         }
 
         /// <summary>
@@ -53,21 +55,28 @@ namespace Puzzle {
             Bitmap bm;
             try {
                 bm = new Bitmap(filename);
-
-                if (bm.Width == bm.Height)
-                    height = width;
-                else if (bm.Width < bm.Height)
-                    (width, height) = (height, width);
-
-                thumbnailpb.Width = width;
-                thumbnailpb.Height = height;
-                thumbnailpb.Image = bm;
-                thumbnailpb.SizeMode = PictureBoxSizeMode.StretchImage;
             }
             catch {
+                nextElementpb.Image = null;
+                nextElementpb.BorderStyle = BorderStyle.None;
+                thumbnailpb.Image = null;
+                thumbnailpb.BorderStyle = BorderStyle.None;
+                tableLP.Controls.Clear();
+                tableLP.BackColor = SystemColors.Control;
                 MessageBox.Show("Invalid file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            if (bm.Width == bm.Height)
+                height = width;
+            else if (bm.Width < bm.Height)
+                (width, height) = (height, width);
+
+            thumbnailpb.Width = width;
+            thumbnailpb.Height = height;
+            thumbnailpb.Image = bm;
+            thumbnailpb.SizeMode = PictureBoxSizeMode.StretchImage;
+            thumbnailpb.BorderStyle = BorderStyle.FixedSingle;
 
             // clear the controls and styles in table
             tableLP.Controls.Clear();
@@ -114,6 +123,7 @@ namespace Puzzle {
             // initialize nextElementpb size
             nextElementpb.Height = pieceSize;
             nextElementpb.Width = pieceSize;
+            nextElementpb.BorderStyle = BorderStyle.FixedSingle;
 
             // get pieces of the puzzle
             elements = new List<element>();
@@ -166,9 +176,9 @@ namespace Puzzle {
             pb.Padding = Padding.Empty;
             pb.Tag = -1;
             pb.AllowDrop = true;
-            pb.MouseDown += src_MouseDown;
-            pb.DragEnter += dest_DragEnter;
-            pb.DragDrop += dest_DragDrop;
+            pb.MouseDown += new MouseEventHandler(src_MouseDown);
+            pb.DragEnter += new DragEventHandler(dest_DragEnter);
+            pb.DragDrop += new DragEventHandler(dest_DragDrop);
             return pb;
         }
 

@@ -82,7 +82,7 @@
             // 
             // nextElementpb
             // 
-            this.nextElementpb.Location = new System.Drawing.Point(33, 708);
+            this.nextElementpb.Location = new System.Drawing.Point(33, 717);
             this.nextElementpb.Name = "nextElementpb";
             this.nextElementpb.Size = new System.Drawing.Size(50, 50);
             this.nextElementpb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -93,7 +93,7 @@
             // 
             this.nextPieceLabel.AutoSize = true;
             this.nextPieceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nextPieceLabel.Location = new System.Drawing.Point(29, 669);
+            this.nextPieceLabel.Location = new System.Drawing.Point(29, 679);
             this.nextPieceLabel.Name = "nextPieceLabel";
             this.nextPieceLabel.Size = new System.Drawing.Size(90, 20);
             this.nextPieceLabel.TabIndex = 3;
@@ -156,7 +156,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1518, 825);
+            this.ClientSize = new System.Drawing.Size(1442, 797);
             this.Controls.Add(this.levelGroupBox);
             this.Controls.Add(this.nextPieceLabel);
             this.Controls.Add(this.nextElementpb);
@@ -164,6 +164,7 @@
             this.Controls.Add(this.importButton);
             this.Controls.Add(this.thumbnailpb);
             this.Name = "PuzzleForm";
+            this.Padding = new System.Windows.Forms.Padding(10);
             this.Text = "Puzzle";
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailpb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextElementpb)).EndInit();
