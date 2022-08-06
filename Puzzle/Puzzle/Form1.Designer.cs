@@ -72,8 +72,8 @@
             this.tableLP.ColumnCount = 1;
             this.tableLP.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 750F));
             this.tableLP.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLP.Location = new System.Drawing.Point(559, 35);
-            this.tableLP.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLP.Location = new System.Drawing.Point(559, 37);
+            this.tableLP.Margin = new System.Windows.Forms.Padding(10);
             this.tableLP.Name = "tableLP";
             this.tableLP.RowCount = 1;
             this.tableLP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 750F));

@@ -28,7 +28,7 @@ namespace Puzzle {
         private int rows, cols;  // the number of rows and columns of table
         private Point src;  // source location of dragdrop operation
         private int pieceSize = 0;
-        List<element> elements;
+        private List<element> elements;
 
         public PuzzleForm() {
             InitializeComponent();
@@ -87,7 +87,7 @@ namespace Puzzle {
             count = 0;
 
             // set table height, width and piecesize
-            if(pieceSize == 0){
+            if (pieceSize == 0) {
                 MessageBox.Show("Choose a Level", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -134,6 +134,7 @@ namespace Puzzle {
 
             // display the 1st piece
             displayNextElement();
+
         }
 
         /// <summary>
@@ -237,7 +238,7 @@ namespace Puzzle {
 
             if (e.Button == MouseButtons.Left) {
                 if (source.Parent == tableLP) // source is in table
-                    src = new Point(source.Location.X, source.Location.Y);
+                    src = source.Location;
                 else
                     src = new Point(-1, -1);  // source is nextElement PB
 
@@ -275,7 +276,7 @@ namespace Puzzle {
                 }
             }
             else { // bitmap is from a cell, swap source and destination
-                PictureBox source = tableLP.GetChildAtPoint(new Point(src.X, src.Y)) as PictureBox;
+                PictureBox source = tableLP.GetChildAtPoint(src) as PictureBox;
                 swapPictureBox(src_img, ref source, ref dest);
             }
 
